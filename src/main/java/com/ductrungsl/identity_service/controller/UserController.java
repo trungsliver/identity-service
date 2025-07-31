@@ -67,6 +67,16 @@ public class UserController {
         return userService.getUser(userId);
     }
 
+//    @GetMapping("/users/{myInfo}")
+//    UserResponse getMyInfo(){
+//        return userService.getMyInfo();
+//    }
+
+    @GetMapping("/myInfo")
+    UserResponse getMyInfo(){
+        return userService.getMyInfo();
+    }
+
     // Chỉnh sửa thông tin bằng ID
     @PutMapping("/{userId}")
 //    User updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
