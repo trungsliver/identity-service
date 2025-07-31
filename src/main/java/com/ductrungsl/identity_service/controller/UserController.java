@@ -10,19 +10,25 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserController {
 //    @Autowired
 //    private UserService userService;
     UserService userService;
+    private final AuthenticationManagerBuilder builder;
 
     // Tạo user mới
 //    @PostMapping
@@ -39,8 +45,18 @@ public class UserController {
     // Lấy thông tin toàn bộ user
     @GetMapping
     List<User> getUsers(){
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username : {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
         return userService.getUsers();
     }
+
+//    @GetMapping
+//    ApiResponse<List<UserResponse>> getUsers(){
+//        return ApiResponse.builder()
+//                .result(userService.getUsers())
+//                .build();
+//    }
 
     // Lấy thông tin user bằng ID
     @GetMapping("/{userId}")
