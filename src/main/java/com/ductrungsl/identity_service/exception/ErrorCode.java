@@ -6,6 +6,7 @@ public enum ErrorCode {
     USER_EXISTED(1002, "User already exists"),
     USERNAME_INVALID(1003, "Username at least 3 characters"),
     PASSWORD_INVALID(1004, "Password at least 8 characters"),
+    INFO_INVALID(1005, "Missing information"),
     ;
 
     ErrorCode(int code, String message) {
