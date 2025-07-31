@@ -4,6 +4,7 @@ import com.ductrungsl.identity_service.dto.request.UserCreationRequest;
 import com.ductrungsl.identity_service.dto.request.UserUpdateRequest;
 import com.ductrungsl.identity_service.dto.response.UserResponse;
 import com.ductrungsl.identity_service.entity.User;
+import com.ductrungsl.identity_service.enums.Role;
 import com.ductrungsl.identity_service.exception.AppException;
 import com.ductrungsl.identity_service.exception.ErrorCode;
 import com.ductrungsl.identity_service.mapper.UserMapper;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -34,6 +36,7 @@ public class UserService {
     // Sau khi có RequiredArgsConstructor và FieldDefaults (lombok)
     UserRepository userRepository;
     UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(UserCreationRequest request){
@@ -56,8 +59,13 @@ public class UserService {
         User user = userMapper.toUser((request));
 
         // Mã hoá Bcript
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        // Khi tạo user mới, mặc định role là USER
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.USER.name());
+        user.setRoles(roles);
 
         return userRepository.save(user);
     }
