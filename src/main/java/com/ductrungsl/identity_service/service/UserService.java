@@ -71,7 +71,7 @@ public class UserService {
         // Khi tạo user mới, mặc định role là USER
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-        user.setRoles(roles);
+        //user.setRoles(roles);
 
         return userRepository.save(user);
     }
